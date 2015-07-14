@@ -18,8 +18,9 @@ import tw.ntu.vison.gifformessenger.fragment.MainActivityFragment;
 /**
  * Created by Vison on 2015/7/14.
  */
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(CustomRobolectricRunner.class)
 @Config(constants = BuildConfig.class)
+
 public class MainActivityFragmentTest {
     MainActivityFragment mFragment;
     @Before

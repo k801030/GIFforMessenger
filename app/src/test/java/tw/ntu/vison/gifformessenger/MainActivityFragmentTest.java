@@ -3,6 +3,7 @@ package tw.ntu.vison.gifformessenger;
 import android.provider.SyncStateContract;
 import android.widget.Button;
 
+import org.apache.tools.ant.taskdefs.Execute;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,6 +34,13 @@ public class MainActivityFragmentTest {
     public void testButtonExist() {
         Button button = (Button) mFragment.getView().findViewById(R.id.search_button);
         Assert.assertThat("Button does not exist", button, CoreMatchers.not(CoreMatchers.nullValue()));
+    }
+
+    @Test
+    public void testExecuteSearch() {
+        new mFragment.Image
+
+        Assert.assertThat();
     }
 
 

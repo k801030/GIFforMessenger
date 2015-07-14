@@ -1,6 +1,7 @@
 package tw.ntu.vison.gifformessenger;
 
 import android.provider.SyncStateContract;
+import android.util.Log;
 import android.widget.Button;
 
 import org.apache.tools.ant.taskdefs.Execute;
@@ -38,9 +39,16 @@ public class MainActivityFragmentTest {
 
     @Test
     public void testExecuteSearch() {
-        new mFragment.Image
+        String url = "https://www.google.com/search?tbm=isch&q=eat+gif";
+        MainActivityFragment.ImageSearchTask task = mFragment.new ImageSearchTask(new MainActivityFragment.TaskCallback() {
+            @Override
+            public void onTaskComplete(String result) {
+                Log.i("RESULT", result);
+                Assert.assertThat("result is null", result, CoreMatchers.not(CoreMatchers.nullValue()));
+            }
+        });
 
-        Assert.assertThat();
+
     }
 
 

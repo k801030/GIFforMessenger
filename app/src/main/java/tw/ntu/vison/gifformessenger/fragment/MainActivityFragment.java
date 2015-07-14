@@ -48,7 +48,7 @@ public class MainActivityFragment extends Fragment {
             searchTask.execute(url);
         }
     }
-    private class ImageSearchTask extends AsyncTask<String , Integer, String> {
+    public class ImageSearchTask extends AsyncTask<String , Integer, String> {
         TaskCallback callback;
 
         public ImageSearchTask(TaskCallback callback) {

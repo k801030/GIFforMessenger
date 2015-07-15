@@ -14,6 +14,9 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.FragmentTestUtil;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+
 import tw.ntu.vison.gifformessenger.activity.MainActivity;
 import tw.ntu.vison.gifformessenger.fragment.MainActivityFragment;
 
@@ -38,16 +41,37 @@ public class MainActivityFragmentTest {
     }
 
     @Test
-    public void testExecuteSearch() {
-        String url = "https://www.google.com/search?tbm=isch&q=eat+gif";
-        MainActivityFragment.ImageSearchTask task = mFragment.new ImageSearchTask(new MainActivityFragment.TaskCallback() {
+    public void testHttpRequest() {
+        String url = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
+        HttpRequest request = HttpRequest.get(url);
+        Assert.assertTrue("request 2 does not return 200", request.ok());
+    }
+
+    @Test
+    public void testResponseResultType() {
+        String url = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
+
+        ImageSearchTask imageSearchTask = new ImageSearchTask(new ImageSearchTask.TaskCallback() {
             @Override
-            public void onTaskComplete(String result) {
-                Log.i("RESULT", result);
-                Assert.assertThat("result is null", result, CoreMatchers.not(CoreMatchers.nullValue()));
+            public void onTaskComplete(ArrayList<String> results) {
+                Assert.assertEquals("results size is incorrect", 8, results.size());
+                ArrayList<String> expectResult = new ArrayList<String>();
+
+                for (int i=0;i<results.size();i++) {
+                    Assert.assertThat(results.get(i), CoreMatchers.not(CoreMatchers.nullValue()));
+                }
+
             }
         });
+        imageSearchTask.execute(url);
 
+        //HttpRequest request_2 = HttpRequest.get(url,false, "tbm", "isch", "q", "eat");
+        //HttpRequest request_3 = HttpRequest.get(url,true, "tbm", "isch", "q", "eat");
+
+        //Assert.assertEquals("request string is not as expected",  requestString, request.toString());
+
+        //Assert.assertTrue("request 2 does not return 200", request_2.ok());
+        //Assert.assertTrue("request 3 does not return 200", request_3.ok());
 
     }
 

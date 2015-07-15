@@ -67,14 +67,6 @@ public class MainActivityFragmentTest {
         });
         imageSearchTask.execute(url);
 
-        //HttpRequest request_2 = HttpRequest.get(url,false, "tbm", "isch", "q", "eat");
-        //HttpRequest request_3 = HttpRequest.get(url,true, "tbm", "isch", "q", "eat");
-
-        //Assert.assertEquals("request string is not as expected",  requestString, request.toString());
-
-        //Assert.assertTrue("request 2 does not return 200", request_2.ok());
-        //Assert.assertTrue("request 3 does not return 200", request_3.ok());
-
     }
 
 

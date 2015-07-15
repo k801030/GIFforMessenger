@@ -1,5 +1,7 @@
 package tw.ntu.vison.gifformessenger;
 
+import java.util.regex.Pattern;
+
 /**
  * Created by Vison on 2015/7/15.
  */
@@ -8,9 +10,10 @@ public class GoogleSearchString {
     private String mUrl;
     private String mQuery;
     private String mFileType;
+    private final String PLUS = "%20";
 
     public GoogleSearchString setQuery(String q) {
-        mQuery = q;
+        mQuery = q.replace(" ",PLUS);
         return this;
     }
     public GoogleSearchString setFileType(String fileType) {
@@ -21,10 +24,10 @@ public class GoogleSearchString {
     public String getUrl() {
         mUrl = API_URL;
         if (mQuery!=null) {
-            mUrl+= "&q=" + mQuery + "+gif";
+            mUrl+= "&q=" + mQuery + PLUS + "gif";
         }
         if (mFileType!=null) {
-            mUrl += "+filetype:" + mFileType;
+            mUrl += PLUS + "filetype:" + mFileType;
         }
         // sample result string will be
         // http://ajax.googleapis.com/ajax/services/search/images?v=1.0&start=0&rsz=8

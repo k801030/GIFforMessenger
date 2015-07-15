@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Vison on 2015/7/15.
  */
+
 public class ImageSearchTask extends AsyncTask<String, Integer, ArrayList<String>> {
     public interface TaskCallback{
         public void onTaskComplete(ArrayList<String> results);
@@ -58,6 +59,7 @@ public class ImageSearchTask extends AsyncTask<String, Integer, ArrayList<String
         super.onPostExecute(results);
         callback.onTaskComplete(results);
     }
+
 }
 
 

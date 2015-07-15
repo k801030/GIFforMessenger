@@ -21,12 +21,14 @@ public class GoogleSearchString {
     public String getUrl() {
         mUrl = API_URL;
         if (mQuery!=null) {
-            mUrl+= "&q=" + mQuery;
+            mUrl+= "&q=" + mQuery + "+gif";
         }
         if (mFileType!=null) {
             mUrl += "+filetype:" + mFileType;
         }
-
+        // sample result string will be
+        // http://ajax.googleapis.com/ajax/services/search/images?v=1.0&start=0&rsz=8
+        // &q=sunrise+gif+filetype:gif
         return mUrl;
     };
 }

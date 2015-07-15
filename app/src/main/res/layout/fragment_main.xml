@@ -7,6 +7,11 @@
     android:orientation="vertical"
     tools:context="tw.ntu.vison.gifformessenger.fragment.MainActivityFragment">
 
+    <EditText
+        android:id="@+id/search_text"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:hint="Search for GIF images..."/>
     <Button
         android:id="@+id/search_button"
         android:layout_width="match_parent"

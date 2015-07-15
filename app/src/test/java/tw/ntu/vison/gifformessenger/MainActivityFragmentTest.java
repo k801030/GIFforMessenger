@@ -2,7 +2,9 @@ package tw.ntu.vison.gifformessenger;
 
 import android.provider.SyncStateContract;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import org.apache.tools.ant.taskdefs.Execute;
 import org.hamcrest.CoreMatchers;

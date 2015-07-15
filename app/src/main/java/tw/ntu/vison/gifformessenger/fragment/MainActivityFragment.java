@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -23,14 +24,17 @@ import tw.ntu.vison.gifformessenger.adapter.ImageGridAdapter;
  */
 public class MainActivityFragment extends Fragment {
     ImageGridAdapter mAdapter;
+    EditText mSearchText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
         // do something with view
         Button button = (Button) view.findViewById(R.id.search_button);
         button.setOnClickListener(new OnSearchListener());
+        mSearchText = (EditText) view.findViewById(R.id.search_text);
 
         // set adapter to gridView
         GridView gridView = (GridView) view.findViewById(R.id.grid_view);
@@ -57,7 +61,8 @@ public class MainActivityFragment extends Fragment {
     private class OnSearchListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            String q = "sunrise";
+            String q = mSearchText.getText().toString();
+
             String url = new GoogleSearchString().setQuery(q).setFileType("gif").getUrl();
             ImageSearchTask task = new ImageSearchTask(new ImageSearchTask.TaskCallback() {
                 @Override

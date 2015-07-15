@@ -15,6 +15,7 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 import tw.ntu.vison.gifformessenger.GoogleSearchString;
+import tw.ntu.vison.gifformessenger.ImageDownloadTask;
 import tw.ntu.vison.gifformessenger.ImageSearchTask;
 import tw.ntu.vison.gifformessenger.R;
 import tw.ntu.vison.gifformessenger.adapter.ImageGridAdapter;
@@ -42,18 +43,6 @@ public class MainActivityFragment extends Fragment {
         mAdapter = new ImageGridAdapter(this.getActivity());
         gridView.setAdapter(mAdapter);
 
-        /* TEST */
-        /*
-        ArrayList<String> imageUrls = new ArrayList<String>();
-        String gifUrl = "https://33.media.tumblr.com/b2e57e2aa59015eda08936d82b84d0a4/tumblr_mz7fs6lvYn1six1cfo1_500.gif";
-        imageUrls.add(gifUrl);
-        imageUrls.add(gifUrl);
-        imageUrls.add(gifUrl);
-        imageUrls.add(gifUrl);
-        imageUrls.add(gifUrl);
-        imageUrls.add(gifUrl);
-        mAdapter.setImageUrls(imageUrls);
-        */
 
         return view;
     }
@@ -63,14 +52,26 @@ public class MainActivityFragment extends Fragment {
         public void onClick(View view) {
             String q = mSearchText.getText().toString();
 
+            // reset byte data
+            mAdapter.clearImageData();
+
             String url = new GoogleSearchString().setQuery(q).setFileType("gif").getUrl();
             ImageSearchTask task = new ImageSearchTask(new ImageSearchTask.TaskCallback() {
                 @Override
                 public void onTaskComplete(ArrayList<String> results) {
                     for (int i=0;i<results.size();i++) {
-                        Log.i("IMAGE URL", results.get(i));
+                        String imageUrl = results.get(i);
+                        Log.i("IMAGE URL", imageUrl);
+                        new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
+                            @Override
+                            public void onTaskComplete(byte[] bytes) {
+                                // do adpater
+                                mAdapter.appendImageData(bytes);
+                                Log.i("get Bytes", bytes.toString());
+                            }
+                        }).execute(imageUrl);
+
                     }
-                    mAdapter.setImageUrls(results);
                 }
             });
             task.execute(url);

@@ -10,8 +10,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
+import com.felipecsl.gifimageview.library.GifImageView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import tw.ntu.vison.gifformessenger.R;
@@ -21,26 +23,30 @@ import tw.ntu.vison.gifformessenger.R;
  */
 public class ImageGridAdapter extends BaseAdapter {
     Context mContext;
-    ArrayList<String> mImageUrls;
+    ArrayList<byte[]> mBigmapDatas;
 
     public ImageGridAdapter(Context context) {
         mContext = context;
-        mImageUrls = new ArrayList<String>();
+        mBigmapDatas = new ArrayList<byte[]>();
     }
 
-    public void setImageUrls(ArrayList<String> imageUrls) {
-        mImageUrls = imageUrls;
+    public void appendImageData(byte[] bigmapData) {
+        mBigmapDatas.add(bigmapData);
         notifyDataSetChanged();
+    }
+
+    public void clearImageData() {
+        mBigmapDatas = new ArrayList<byte[]>();
     }
 
     @Override
     public int getCount() {
-        return mImageUrls.size();
+        return mBigmapDatas.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mImageUrls.get(i);
+        return mBigmapDatas.get(i);
     }
 
     @Override
@@ -50,12 +56,12 @@ public class ImageGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup parentView) {
-        ImageView imageView;
+        GifImageView gifImageView;
 
         if (view == null) { // if view is not recycled, initialize it
-            imageView = new ImageView(mContext);
+            gifImageView = new GifImageView(mContext);
         } else {
-            imageView = (ImageView) view;
+            gifImageView = (GifImageView) view;
         }
 
         GridView gridView = (GridView) parentView;
@@ -63,13 +69,15 @@ public class ImageGridAdapter extends BaseAdapter {
         int fullWidth = gridView.getWidth();
         int padding = 8;
         int width = calculateWidthForImageView(column, fullWidth, padding);
-        imageView.setLayoutParams(new GridView.LayoutParams(width, width));
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setPadding(padding, padding, padding, padding);
+        gifImageView.setLayoutParams(new GridView.LayoutParams(width, width));
+        gifImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        gifImageView.setPadding(padding, padding, padding, padding);
 
         // set image resource
-        UrlImageViewHelper.setUrlDrawable(imageView, mImageUrls.get(i));
-        return imageView;
+        gifImageView.setBytes(mBigmapDatas.get(i));
+        gifImageView.startAnimation();
+
+        return gifImageView;
     }
 
     private Integer calculateWidthForImageView(int column, int fullWidth, int padding) {

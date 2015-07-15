@@ -48,7 +48,7 @@ public class MainActivityFragmentTest {
     }
 
     @Test
-    public void testResponseResultType() {
+    public void testImageSearch() {
         String url = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
 
         ImageSearchTask imageSearchTask = new ImageSearchTask(new ImageSearchTask.TaskCallback() {

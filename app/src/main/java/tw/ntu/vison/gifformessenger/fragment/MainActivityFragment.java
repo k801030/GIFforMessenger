@@ -56,6 +56,9 @@ public class MainActivityFragment extends Fragment {
             mAdapter.clearImageData();
 
             String url = new GoogleSearchString().setQuery(q).setFileType("gif").getUrl();
+            if (url == null) {
+                return;
+            }
             ImageSearchTask task = new ImageSearchTask(new ImageSearchTask.TaskCallback() {
                 @Override
                 public void onTaskComplete(ArrayList<String> results) {

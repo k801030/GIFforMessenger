@@ -44,14 +44,18 @@ public class MainActivityFragmentTest {
 
     @Test
     public void testHttpRequest() {
-        String url = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
-        HttpRequest request = HttpRequest.get(url);
-        Assert.assertTrue("request 2 does not return 200", request.ok());
+        String url_1 = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
+        String url_2 = new GoogleSearchString().setQuery("進擊的巨人").setFileType("gif").getUrl();
+        HttpRequest request_1 = HttpRequest.get(url_1);
+        HttpRequest request_2 = HttpRequest.get(url_2);
+        Assert.assertTrue("request 1 does not return 200", request_1.ok());
+        Assert.assertTrue("request 2 does not return 200", request_2.ok());
     }
 
     @Test
     public void testImageSearch() {
-        String url = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
+        String url_1 = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
+        String url_2 = new GoogleSearchString().setQuery("進擊的巨人").setFileType("gif").getUrl();
 
         ImageSearchTask imageSearchTask = new ImageSearchTask(new ImageSearchTask.TaskCallback() {
             @Override
@@ -65,7 +69,8 @@ public class MainActivityFragmentTest {
 
             }
         });
-        imageSearchTask.execute(url);
+        imageSearchTask.execute(url_1);
+        imageSearchTask.execute(url_2);
 
     }
 

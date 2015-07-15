@@ -27,7 +27,6 @@ public class ImageSearchTask extends AsyncTask<String, Integer, ArrayList<String
     public ImageSearchTask(TaskCallback callback) {
         this.callback = callback;
     }
-
     @Override
     protected ArrayList<String> doInBackground(String... urls) {
         // HttpRequest object is synchronous

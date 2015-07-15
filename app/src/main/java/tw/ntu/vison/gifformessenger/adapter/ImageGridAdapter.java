@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -48,18 +49,31 @@ public class ImageGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int i, View view, ViewGroup parentView) {
         ImageView imageView;
+
         if (view == null) { // if view is not recycled, initialize it
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(90,90));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) view;
         }
+
+        GridView gridView = (GridView) parentView;
+        int column = gridView.getNumColumns();
+        int fullWidth = gridView.getWidth();
+        int padding = 8;
+        int width = calculateWidthForImageView(column, fullWidth, padding);
+        imageView.setLayoutParams(new GridView.LayoutParams(width, width));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setPadding(padding, padding, padding, padding);
+
         // set image resource
         UrlImageViewHelper.setUrlDrawable(imageView, mImageUrls.get(i));
         return imageView;
+    }
+
+    private Integer calculateWidthForImageView(int column, int fullWidth, int padding) {
+        int width = fullWidth/column - 2 * padding;
+        return width;
     }
 }

@@ -55,7 +55,7 @@ public class MainActivityFragment extends Fragment {
             // reset byte data
             mAdapter.clearImageData();
 
-            String url = new GoogleSearchString().setQuery(q).setFileType("gif").getUrl();
+            String url = new GoogleSearchString().setQuery(q).setFileType("gif").setSize(GoogleSearchString.ICON_SIZE).getUrl();
             if (url == null) {
                 return;
             }

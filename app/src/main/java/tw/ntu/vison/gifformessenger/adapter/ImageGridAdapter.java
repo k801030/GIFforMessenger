@@ -36,6 +36,7 @@ public class ImageGridAdapter extends BaseAdapter {
     }
 
     public void clearImageData() {
+
         mBigmapDatas = new ArrayList<byte[]>();
     }
 

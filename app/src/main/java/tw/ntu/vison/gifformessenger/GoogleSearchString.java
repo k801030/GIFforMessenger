@@ -14,6 +14,10 @@ public class GoogleSearchString {
     private String mUrl;
     private String mQuery;
     private String mFileType;
+    private String mImageSize;
+    public final static int ICON_SIZE = 0;
+    public final static int SMALL_SIZE = 2;
+    public final static int MEDIUM_SIZE = 3;
 
     public GoogleSearchString setQuery(String q) {
         mQuery = q.replace(" ","+");
@@ -24,6 +28,16 @@ public class GoogleSearchString {
         return this;
     }
 
+    public GoogleSearchString setSize(int type) {;
+        switch (type) {
+            case ICON_SIZE:
+                mImageSize = "icon";
+                break;
+            default:
+                break;
+        };
+        return this;
+    }
     private String encode(String s) {
         try {
             s = URLEncoder.encode(s, "UTF-8");
@@ -37,6 +51,7 @@ public class GoogleSearchString {
         if (mQuery == null) {
             return null;
         }
+        mUrl = API_URL;
 
         // added some
         mQuery += "+gif";
@@ -44,8 +59,13 @@ public class GoogleSearchString {
             mQuery += "+filetype:" + mFileType;
         }
 
+        // set size
+        if (mImageSize!=null) {
+            mUrl += "&imgsz=" + mImageSize;
+        }
+
         // encode query
-        mUrl = API_URL + "&q=" + encode(mQuery);
+        mUrl += "&q=" + encode(mQuery);
         // sample result string will be
         // http://ajax.googleapis.com/ajax/services/search/images?v=1.0&start=0&rsz=8
         // &q=sunrise+gif+filetype:gif

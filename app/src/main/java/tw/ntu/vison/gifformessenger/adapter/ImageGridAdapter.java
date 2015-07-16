@@ -77,6 +77,7 @@ public class ImageGridAdapter extends BaseAdapter {
         gifImageView.setBytes(mBigmapDatas.get(i));
         gifImageView.startAnimation();
 
+
         return gifImageView;
     }
 

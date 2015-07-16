@@ -65,6 +65,7 @@ public class MainActivityFragment extends Fragment {
                     for (int i=0;i<results.size();i++) {
                         String imageUrl = results.get(i);
                         Log.i("IMAGE URL", imageUrl);
+
                         new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
                             @Override
                             public void onTaskComplete(byte[] bytes) {

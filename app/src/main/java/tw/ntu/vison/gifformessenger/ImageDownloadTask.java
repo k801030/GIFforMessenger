@@ -1,6 +1,7 @@
 package tw.ntu.vison.gifformessenger;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,9 +32,12 @@ public class ImageDownloadTask extends AsyncTask<String, Integer, byte[]> {
             is = url.openStream();
             byte[] byteChunk = new byte[4096]; // Or whatever size you want to read in at a time.
             int n;
+            Integer i=0;
             while ( (n = is.read(byteChunk)) > 0 ) {
                 outputStream.write(byteChunk, 0, n);
+                Log.i("OUTPUT_STREAM", (i++).toString());
             }
+            Log.i("TOTAL_BYTES", Integer.toString(byteChunk.length));
         }
         catch (IOException e) {
             System.err.printf ("Failed while reading bytes from url: %s", e.getMessage());

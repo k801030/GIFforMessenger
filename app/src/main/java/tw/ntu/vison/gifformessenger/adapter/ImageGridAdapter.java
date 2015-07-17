@@ -35,7 +35,6 @@ public class ImageGridAdapter extends BaseAdapter {
 
     public void appendImageData(Movie bigmapData) {
         mBigmapDatas.add(bigmapData);
-        notifyDataSetChanged();
     }
 
     public void clearImageData() {
@@ -69,8 +68,8 @@ public class ImageGridAdapter extends BaseAdapter {
         }
 
 
-        ExpandableHeightGridView gridView = (ExpandableHeightGridView) parentView;
-        gridView.setExpanded(true);
+        GridView gridView = (GridView) parentView;
+        // gridView.setExpanded(true);
 
         int column = gridView.getNumColumns();
         int fullWidth = gridView.getWidth();

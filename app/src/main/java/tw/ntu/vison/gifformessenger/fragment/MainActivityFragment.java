@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
@@ -18,12 +19,14 @@ import tw.ntu.vison.gifformessenger.ImageDownloadTask;
 import tw.ntu.vison.gifformessenger.ImageSearchTask;
 import tw.ntu.vison.gifformessenger.R;
 import tw.ntu.vison.gifformessenger.adapter.ImageGridAdapter;
+import tw.ntu.vison.gifformessenger.view.ExpandableHeightGridView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
     ImageGridAdapter mAdapter;
+    GridView mGridView;
     EditText mSearchText;
     GoogleSearchAPI googleSearchAPI;
 
@@ -40,10 +43,9 @@ public class MainActivityFragment extends Fragment {
         mSearchText = (EditText) view.findViewById(R.id.search_text);
 
         // set adapter to gridView
-        GridView gridView = (GridView) view.findViewById(R.id.grid_view);
-
+        mGridView = (GridView) view.findViewById(R.id.grid_view);
         mAdapter = new ImageGridAdapter(this.getActivity());
-        gridView.setAdapter(mAdapter);
+        mGridView.setAdapter(mAdapter);
 
 
         return view;
@@ -91,8 +93,11 @@ public class MainActivityFragment extends Fragment {
                 new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
                     @Override
                     public void onTaskComplete(Movie movie) {
-                        // do adpater
+
+                        // notify dataset changed or re-assign adapter here
                         mAdapter.appendImageData(movie);
+                        mAdapter.notifyDataSetChanged();
+
                         Log.i("DownloadTask Complete", "");
                     }
                 }).execute(imageUrl);

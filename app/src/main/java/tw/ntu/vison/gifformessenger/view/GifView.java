@@ -43,8 +43,9 @@ public class GifView extends View {
             }
             int relTime = (int)((now - mMovieStart) % duration);
             mMovie.setTime(relTime);
-            mMovie.draw(canvas, getWidth() - mMovie.width(),
-                    getHeight() - mMovie.height());
+            canvas.scale((float)this.getWidth() / (float)mMovie.width(),(float)this.getHeight() / (float)mMovie.height());
+
+            mMovie.draw(canvas, 10, 2);
             invalidate();
         }
     }

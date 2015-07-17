@@ -57,7 +57,6 @@ public class MainActivityFragment extends Fragment {
             mAdapter.clearImageData();
 
             String url = new GoogleSearchString().setQuery(q).setFileType("gif").getUrl();
-            Log.i("Search String", url);
             if (url == null) {
                 return;
             }

@@ -1,8 +1,6 @@
 package tw.ntu.vison.gifformessenger.fragment;
 
-import android.app.Activity;
 import android.graphics.Movie;
-import android.os.AsyncTask;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +13,7 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
-import tw.ntu.vison.gifformessenger.GoogleSearchString;
+import tw.ntu.vison.gifformessenger.GoogleSearchAPI;
 import tw.ntu.vison.gifformessenger.ImageDownloadTask;
 import tw.ntu.vison.gifformessenger.ImageSearchTask;
 import tw.ntu.vison.gifformessenger.R;
@@ -27,6 +25,7 @@ import tw.ntu.vison.gifformessenger.adapter.ImageGridAdapter;
 public class MainActivityFragment extends Fragment {
     ImageGridAdapter mAdapter;
     EditText mSearchText;
+    GoogleSearchAPI googleSearchAPI;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,38 +48,54 @@ public class MainActivityFragment extends Fragment {
     }
 
     private class OnSearchListener implements View.OnClickListener {
+
         @Override
         public void onClick(View view) {
-            String q = mSearchText.getText().toString();
-
             // reset byte data
             mAdapter.clearImageData();
+            String q = mSearchText.getText().toString();
+            googleSearchAPI = new GoogleSearchAPI();
 
-            String url = new GoogleSearchString().setQuery(q).setFileType("gif").getUrl();
-            if (url == null) {
+            String url = googleSearchAPI.setQuery(q).setFileType("gif").getUrl();
+            if (url == null) { // there is no string in the search bar
                 return;
             }
-            ImageSearchTask task = new ImageSearchTask(new ImageSearchTask.TaskCallback() {
-                @Override
-                public void onTaskComplete(ArrayList<String> results) {
-                    for (int i=0;i<results.size();i++) {
-                        String imageUrl = results.get(i);
-                        Log.i("IMAGE URL", imageUrl);
-
-                        new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
-                            @Override
-                            public void onTaskComplete(Movie movie) {
-                                // do adpater
-                                mAdapter.appendImageData(movie);
-                                Log.i("DownloadTask Complete", "");
-                            }
-                        }).execute(imageUrl);
-
-                    }
-                }
-            });
+            ImageSearchTask task = new ImageSearchTask(new CustomTaskCallback());
             task.execute(url);
         }
     }
 
+    private class OnLoadMoreListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            if (googleSearchAPI != null) {
+                String url = googleSearchAPI.getNextPageUrl();
+                if (url == null) {
+                    return;
+                }
+                ImageSearchTask task = new ImageSearchTask(new CustomTaskCallback());
+                task.execute(url);
+            }
+        }
+    }
+
+    private class CustomTaskCallback implements ImageSearchTask.TaskCallback {
+        @Override
+        public void onTaskComplete(ArrayList<String> results) {
+            for (int i=0;i<results.size();i++) {
+                String imageUrl = results.get(i);
+                Log.i("IMAGE URL", imageUrl);
+
+                new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
+                    @Override
+                    public void onTaskComplete(Movie movie) {
+                        // do adpater
+                        mAdapter.appendImageData(movie);
+                        Log.i("DownloadTask Complete", "");
+                    }
+                }).execute(imageUrl);
+
+            }
+        }
+    }
 }

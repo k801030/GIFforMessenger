@@ -18,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import tw.ntu.vison.gifformessenger.R;
+import tw.ntu.vison.gifformessenger.view.ExpandableHeightGridView;
 import tw.ntu.vison.gifformessenger.view.GifView;
 
 /**
@@ -67,7 +68,10 @@ public class ImageGridAdapter extends BaseAdapter {
             gifView = (GifView) view;
         }
 
-        GridView gridView = (GridView) parentView;
+
+        ExpandableHeightGridView gridView = (ExpandableHeightGridView) parentView;
+        gridView.setExpanded(true);
+
         int column = gridView.getNumColumns();
         int fullWidth = gridView.getWidth();
         int padding = 8;

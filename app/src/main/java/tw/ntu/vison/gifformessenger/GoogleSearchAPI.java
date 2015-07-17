@@ -1,15 +1,12 @@
 package tw.ntu.vison.gifformessenger;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.regex.Pattern;
 
 /**
  * Created by Vison on 2015/7/15.
  */
-public class GoogleSearchString {
+public class GoogleSearchAPI {
     private final String API_URL = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0";
     private final int PAGE_SIZE = 8;
     private int startNumber = 0;
@@ -22,16 +19,16 @@ public class GoogleSearchString {
     public final static int SMALL_SIZE = 1;
     public final static int MEDIUM_SIZE = 2;
 
-    public GoogleSearchString setQuery(String q) {
+    public GoogleSearchAPI setQuery(String q) {
         mQuery = q.replace(" ","+");
         return this;
     }
-    public GoogleSearchString setFileType(String fileType) {
+    public GoogleSearchAPI setFileType(String fileType) {
         mFileType = fileType;
         return this;
     }
 
-    public GoogleSearchString setSize(int type) {;
+    public GoogleSearchAPI setSize(int type) {;
         switch (type) {
             case ICON_SIZE:
                 mImageSize = "icon";

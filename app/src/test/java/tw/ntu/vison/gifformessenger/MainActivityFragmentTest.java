@@ -1,23 +1,16 @@
 package tw.ntu.vison.gifformessenger;
 
-import android.provider.SyncStateContract;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
-import org.apache.tools.ant.taskdefs.Execute;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.FragmentTestUtil;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 
 import tw.ntu.vison.gifformessenger.activity.MainActivity;
 import tw.ntu.vison.gifformessenger.fragment.MainActivityFragment;
@@ -44,8 +37,8 @@ public class MainActivityFragmentTest {
 
     @Test
     public void testHttpRequest() {
-        String url_1 = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
-        String url_2 = new GoogleSearchString().setQuery("進擊的巨人").setFileType("gif").getUrl();
+        String url_1 = new GoogleSearchAPI().setQuery("pokemon").setFileType("gif").getUrl();
+        String url_2 = new GoogleSearchAPI().setQuery("進擊的巨人").setFileType("gif").getUrl();
         HttpRequest request_1 = HttpRequest.get(url_1);
         HttpRequest request_2 = HttpRequest.get(url_2);
         Assert.assertTrue("request 1 does not return 200", request_1.ok());
@@ -54,8 +47,8 @@ public class MainActivityFragmentTest {
 
     @Test
     public void testImageSearch() {
-        String url_1 = new GoogleSearchString().setQuery("pokemon").setFileType("gif").getUrl();
-        String url_2 = new GoogleSearchString().setQuery("進擊的巨人").setFileType("gif").getUrl();
+        String url_1 = new GoogleSearchAPI().setQuery("pokemon").setFileType("gif").getUrl();
+        String url_2 = new GoogleSearchAPI().setQuery("進擊的巨人").setFileType("gif").getUrl();
 
         ImageSearchTask imageSearchTask = new ImageSearchTask(new ImageSearchTask.TaskCallback() {
             @Override

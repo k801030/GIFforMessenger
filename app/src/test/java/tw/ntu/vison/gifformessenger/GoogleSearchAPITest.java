@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
@@ -15,7 +14,7 @@ import org.robolectric.shadows.ShadowLog;
  */
 @RunWith(CustomRobolectricRunner.class)
 @Config(constants = BuildConfig.class)
-public class GoogleSearchStringTest {
+public class GoogleSearchAPITest {
     @Before
     public void setUp() throws Exception {
         ShadowLog.stream = System.out;
@@ -25,10 +24,10 @@ public class GoogleSearchStringTest {
     @Test
     public void testQueryReplace() {
         // test dataset
-        String s1 = new GoogleSearchString().setQuery("df saf ff").setFileType("gif").getUrl();
-        String s2 = new GoogleSearchString().setQuery("hello my,bro").getUrl();
-        String s3 = new GoogleSearchString().setQuery("  ").getUrl();
-        GoogleSearchString google = new GoogleSearchString().setQuery("");
+        String s1 = new GoogleSearchAPI().setQuery("df saf ff").setFileType("gif").getUrl();
+        String s2 = new GoogleSearchAPI().setQuery("hello my,bro").getUrl();
+        String s3 = new GoogleSearchAPI().setQuery("  ").getUrl();
+        GoogleSearchAPI google = new GoogleSearchAPI().setQuery("");
         String s4 = google.getUrl();
         String s5 = google.getNextPageUrl();
 

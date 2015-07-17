@@ -1,4 +1,6 @@
 package tw.ntu.vison.gifformessenger;
+        import android.graphics.Movie;
+
         import org.hamcrest.CoreMatchers;
         import org.junit.Assert;
         import org.junit.Test;
@@ -17,8 +19,8 @@ public class ImageDownloadTaskTest {
         String url_1 = "http://www.sport-image.fr/IMAGES/CLIPARTSPORT/RUGBY/BOY.GIF";
         new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
             @Override
-            public void onTaskComplete(byte[] bytes) {
-                Assert.assertThat(bytes, CoreMatchers.not(CoreMatchers.nullValue()));
+            public void onTaskComplete(Movie movie) {
+                Assert.assertThat(movie, CoreMatchers.not(CoreMatchers.nullValue()));
             }
         }).execute(url_1);
 

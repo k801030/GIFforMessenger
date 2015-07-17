@@ -79,8 +79,9 @@ public class ImageGridAdapter extends BaseAdapter {
         // set image resource
         // gifImageView.setBytes(mBigmapDatas.get(i));
 
-        // turn the hardware acceleration off
+        // turn the hardware acceleration off in order execute Movie class correctly
         gifView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
         gifView.setMovie(mBigmapDatas.get(i));
 
 

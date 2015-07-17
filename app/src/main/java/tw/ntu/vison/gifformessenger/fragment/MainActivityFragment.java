@@ -33,8 +33,10 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         // do something with view
-        Button button = (Button) view.findViewById(R.id.search_button);
-        button.setOnClickListener(new OnSearchListener());
+        Button buttonSearch = (Button) view.findViewById(R.id.button_search);
+        buttonSearch.setOnClickListener(new OnSearchListener());
+        Button buttonLoadMore = (Button) view.findViewById(R.id.button_load_more);
+        buttonLoadMore.setOnClickListener(new OnLoadMoreListener());
         mSearchText = (EditText) view.findViewById(R.id.search_text);
 
         // set adapter to gridView

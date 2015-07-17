@@ -1,5 +1,6 @@
 package tw.ntu.vison.gifformessenger;
 
+import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,9 +13,9 @@ import java.util.ArrayList;
 /**
  * Created by Vison on 2015/7/15.
  */
-public class ImageDownloadTask extends AsyncTask<String, Integer, byte[]> {
+public class ImageDownloadTask extends AsyncTask<String, Integer, Movie> {
     public interface TaskCallback{
-        public void onTaskComplete(byte[] bytes);
+        public void onTaskComplete(Movie movie);
     };
     TaskCallback callback;
 
@@ -23,42 +24,27 @@ public class ImageDownloadTask extends AsyncTask<String, Integer, byte[]> {
     }
 
     @Override
-    protected byte[] doInBackground(String... strings) {
+    protected Movie doInBackground(String... strings) {
         URL url;
         InputStream is = null;
+        Movie movie = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             url = new URL(strings[0]);
             is = url.openStream();
-            byte[] byteChunk = new byte[4096]; // Or whatever size you want to read in at a time.
-            int n;
-            Integer i=0;
-            while ( (n = is.read(byteChunk)) > 0 ) {
-                outputStream.write(byteChunk, 0, n);
-                Log.i("OUTPUT_STREAM", (i++).toString());
-            }
-            Log.i("TOTAL_BYTES", Integer.toString(byteChunk.length));
+            movie = Movie.decodeStream(is);
+            is.close();
         }
         catch (IOException e) {
             System.err.printf ("Failed while reading bytes from url: %s", e.getMessage());
             e.printStackTrace ();
-            // Perform any other exception handling that's appropriate.
         }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return outputStream.toByteArray();
+        return movie;
     }
 
     @Override
-    protected void onPostExecute(byte[] bytes) {
-        super.onPostExecute(bytes);
-        callback.onTaskComplete(bytes);
+    protected void onPostExecute(Movie movie) {
+        super.onPostExecute(movie);
+        callback.onTaskComplete(movie);
     }
 }

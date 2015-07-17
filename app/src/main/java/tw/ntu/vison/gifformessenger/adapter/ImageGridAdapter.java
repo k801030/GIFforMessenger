@@ -1,6 +1,7 @@
 package tw.ntu.vison.gifformessenger.adapter;
 
 import android.content.Context;
+import android.graphics.Movie;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +18,21 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import tw.ntu.vison.gifformessenger.R;
+import tw.ntu.vison.gifformessenger.view.GifView;
 
 /**
  * Created by Vison on 2015/7/15.
  */
 public class ImageGridAdapter extends BaseAdapter {
     Context mContext;
-    ArrayList<byte[]> mBigmapDatas;
+    ArrayList<Movie> mBigmapDatas;
 
     public ImageGridAdapter(Context context) {
         mContext = context;
-        mBigmapDatas = new ArrayList<byte[]>();
+        mBigmapDatas = new ArrayList<Movie>();
     }
 
-    public void appendImageData(byte[] bigmapData) {
+    public void appendImageData(Movie bigmapData) {
         mBigmapDatas.add(bigmapData);
         notifyDataSetChanged();
     }
@@ -57,12 +59,12 @@ public class ImageGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup parentView) {
-        GifImageView gifImageView;
+        GifView gifView;
 
         if (view == null) { // if view is not recycled, initialize it
-            gifImageView = new GifImageView(mContext);
+            gifView = new GifView(mContext);
         } else {
-            gifImageView = (GifImageView) view;
+            gifView = (GifView) view;
         }
 
         GridView gridView = (GridView) parentView;
@@ -70,16 +72,19 @@ public class ImageGridAdapter extends BaseAdapter {
         int fullWidth = gridView.getWidth();
         int padding = 8;
         int width = calculateWidthForImageView(column, fullWidth, padding);
-        gifImageView.setLayoutParams(new GridView.LayoutParams(width, width));
-        gifImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        gifImageView.setPadding(padding, padding, padding, padding);
+        gifView.setLayoutParams(new GridView.LayoutParams(width, width));
+        // gifView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        gifView.setPadding(padding, padding, padding, padding);
 
         // set image resource
-        gifImageView.setBytes(mBigmapDatas.get(i));
-        gifImageView.startAnimation();
+        // gifImageView.setBytes(mBigmapDatas.get(i));
+
+        // turn the hardware acceleration off
+        gifView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        gifView.setMovie(mBigmapDatas.get(i));
 
 
-        return gifImageView;
+        return gifView;
     }
 
     private Integer calculateWidthForImageView(int column, int fullWidth, int padding) {

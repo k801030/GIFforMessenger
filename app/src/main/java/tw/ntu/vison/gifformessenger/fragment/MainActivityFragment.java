@@ -1,6 +1,7 @@
 package tw.ntu.vison.gifformessenger.fragment;
 
 import android.app.Activity;
+import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -68,10 +69,10 @@ public class MainActivityFragment extends Fragment {
 
                         new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
                             @Override
-                            public void onTaskComplete(byte[] bytes) {
+                            public void onTaskComplete(Movie movie) {
                                 // do adpater
-                                mAdapter.appendImageData(bytes);
-                                Log.i("get Bytes", bytes.toString());
+                                mAdapter.appendImageData(movie);
+                                Log.i("DownloadTask Complete", "");
                             }
                         }).execute(imageUrl);
 

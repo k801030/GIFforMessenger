@@ -35,11 +35,13 @@ public class ImageGridAdapter extends BaseAdapter {
 
     public void appendImageData(Movie bigmapData) {
         mBigmapDatas.add(bigmapData);
+        notifyDataSetChanged();
     }
 
     public void clearImageData() {
         mBigmapDatas.clear();
-        // mBigmapDatas = new ArrayList<byte[]>();
+        notifyDataSetChanged();
+
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,7 @@ import tw.ntu.vison.gifformessenger.ImageDownloadTask;
 import tw.ntu.vison.gifformessenger.ImageSearchTask;
 import tw.ntu.vison.gifformessenger.R;
 import tw.ntu.vison.gifformessenger.adapter.ImageGridAdapter;
-import tw.ntu.vison.gifformessenger.view.ExpandableHeightGridView;
+import tw.ntu.vison.gifformessenger.EndlessScrollListener;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -46,7 +45,19 @@ public class MainActivityFragment extends Fragment {
         mGridView = (GridView) view.findViewById(R.id.grid_view);
         mAdapter = new ImageGridAdapter(this.getActivity());
         mGridView.setAdapter(mAdapter);
-
+        mGridView.setOnScrollListener(new EndlessScrollListener(){
+            @Override
+            public void loadMore() {
+                if (googleSearchAPI != null) {
+                    String url = googleSearchAPI.getNextPageUrl();
+                    if (url == null) {
+                        return;
+                    }
+                    ImageSearchTask task = new ImageSearchTask(new CustomTaskCallback());
+                    task.execute(url);
+                }
+            }
+        });
 
         return view;
     }
@@ -55,11 +66,15 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
+            if (googleSearchAPI == null) {
+                googleSearchAPI = new GoogleSearchAPI();
+            }
+
             // reset byte data
             mAdapter.clearImageData();
             String q = mSearchText.getText().toString();
-            googleSearchAPI = new GoogleSearchAPI();
 
+            googleSearchAPI.resetPage();
             String url = googleSearchAPI.setQuery(q).setFileType("gif").getUrl();
             if (url == null) { // there is no string in the search bar
                 return;
@@ -96,7 +111,6 @@ public class MainActivityFragment extends Fragment {
 
                         // notify dataset changed or re-assign adapter here
                         mAdapter.appendImageData(movie);
-                        mAdapter.notifyDataSetChanged();
 
                         Log.i("DownloadTask Complete", "");
                     }

@@ -1,6 +1,7 @@
 package tw.ntu.vison.gifformessenger;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -36,6 +37,7 @@ public class ImageSearchTask extends AsyncTask<String, Integer, ArrayList<String
             String string = request.body();
             try {
                 JSONObject jsonObject = new JSONObject(string);
+                Log.i("STRING", string);
                 JSONArray array = jsonObject.getJSONObject("responseData").getJSONArray("results");
                 ArrayList<String> results = new ArrayList<String>();
                 for (int i=0;i<array.length();i++) {

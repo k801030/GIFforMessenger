@@ -2,23 +2,12 @@ package tw.ntu.vison.gifformessenger.adapter;
 
 import android.content.Context;
 import android.graphics.Movie;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 
-import com.felipecsl.gifimageview.library.GifImageView;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-
-import tw.ntu.vison.gifformessenger.R;
-import tw.ntu.vison.gifformessenger.view.ExpandableHeightGridView;
 import tw.ntu.vison.gifformessenger.view.GifView;
 
 /**

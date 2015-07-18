@@ -29,17 +29,20 @@ public class ImageDownloadTask extends AsyncTask<String, Integer, Movie> {
         InputStream is;
         Movie movie = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            url = new URL(strings[0]);
-            is = url.openStream();
-            movie = Movie.decodeStream(is);
-            is.close();
+        if (!isCancelled()) {
+            try {
+                url = new URL(strings[0]);
+                is = url.openStream();
+                movie = Movie.decodeStream(is);
+                is.close();
+            }
+            catch (IOException e) {
+                // if fail to get source at openStream, return null
+                System.err.printf("Failed while reading bytes from url: %s", e.getMessage());
+                e.printStackTrace ();
+            }
         }
-        catch (IOException e) {
-            System.err.printf ("Failed while reading bytes from url: %s", e.getMessage());
-            e.printStackTrace ();
-            return null;
-        }
+
         return movie;
     }
 
@@ -47,5 +50,11 @@ public class ImageDownloadTask extends AsyncTask<String, Integer, Movie> {
     protected void onPostExecute(Movie movie) {
         super.onPostExecute(movie);
         callback.onTaskComplete(movie);
+    }
+
+    @Override
+    protected void onCancelled(Movie movie) {
+        Log.i("CANCEL","");
+        super.onCancelled(movie);
     }
 }

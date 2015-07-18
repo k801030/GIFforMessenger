@@ -27,7 +27,10 @@ public class MainActivityFragment extends Fragment {
     ImageGridAdapter mAdapter;
     GridView mGridView;
     EditText mSearchText;
-    GoogleSearchAPI googleSearchAPI;
+    GoogleSearchAPI mGoogleSearchAPI = new GoogleSearchAPI();
+    ArrayList<ImageDownloadTask> mDownloadTasks = new ArrayList<ImageDownloadTask>();
+    EndlessScrollListener mEndlessScrollListener;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,37 +46,45 @@ public class MainActivityFragment extends Fragment {
         mGridView = (GridView) view.findViewById(R.id.grid_view);
         mAdapter = new ImageGridAdapter(this.getActivity());
         mGridView.setAdapter(mAdapter);
-        mGridView.setOnScrollListener(new EndlessScrollListener(){
+        mEndlessScrollListener = new EndlessScrollListener() {
             @Override
             public void loadMore() {
-                if (googleSearchAPI != null) {
-                    String url = googleSearchAPI.getNextPageUrl();
-                    if (url == null) {
-                        return;
-                    }
-                    ImageSearchTask task = new ImageSearchTask(new CustomTaskCallback());
-                    task.execute(url);
-                }
+                loadMoreDataFromGoogleAPI();
             }
-        });
+        };
+        mGridView.setOnScrollListener(mEndlessScrollListener);
 
         return view;
+    }
+
+    private void loadMoreDataFromGoogleAPI() {
+        if (mGoogleSearchAPI != null) {
+            String url = mGoogleSearchAPI.getNextPageUrl();
+            if (url == null) {
+                return;
+            }
+            ImageSearchTask task = new ImageSearchTask(new CustomTaskCallback());
+            task.execute(url);
+        }
     }
 
     private class OnSearchListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            if (googleSearchAPI == null) {
-                googleSearchAPI = new GoogleSearchAPI();
-            }
-
             // reset byte data
             mAdapter.clearImageData();
+            // cancel current download tasks
+            for (int i=0;i<mDownloadTasks.size();i++) {
+                mDownloadTasks.get(i).cancel(true);
+            }
+            // reset load status
+            mEndlessScrollListener.reset();
+
             String q = mSearchText.getText().toString();
 
-            googleSearchAPI.resetPage();
-            String url = googleSearchAPI.setQuery(q).setFileType("gif").getUrl();
+            mGoogleSearchAPI.resetPage();
+            String url = mGoogleSearchAPI.setQuery(q).setFileType("gif").getUrl();
             if (url == null) { // there is no string in the search bar
                 return;
             }
@@ -89,10 +100,9 @@ public class MainActivityFragment extends Fragment {
                 String imageUrl = results.get(i);
                 Log.i("IMAGE URL", imageUrl);
 
-                new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
+                ImageDownloadTask task = new ImageDownloadTask(new ImageDownloadTask.TaskCallback() {
                     @Override
                     public void onTaskComplete(Movie movie) {
-
                         // notify dataset changed or re-assign adapter here
                         if (movie == null) { // can't get data
                             return;
@@ -100,8 +110,9 @@ public class MainActivityFragment extends Fragment {
                         mAdapter.appendImageData(movie);
 
                     }
-                }).execute(imageUrl);
-
+                });
+                task.execute(imageUrl);
+                mDownloadTasks.add(task);
             }
         }
     }

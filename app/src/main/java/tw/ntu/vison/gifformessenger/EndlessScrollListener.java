@@ -42,5 +42,9 @@ public abstract class EndlessScrollListener implements AbsListView.OnScrollListe
 
     }
 
+    public void reset() {
+        isLoading = false;
+    }
+
     public abstract void loadMore();
 }

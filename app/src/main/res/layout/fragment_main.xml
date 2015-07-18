@@ -33,10 +33,4 @@
             android:layout_marginTop="84dp"
             android:numColumns="2">
         </GridView>
-        <Button
-            android:id="@+id/button_load_more"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="@string/button_load_more"/>
 </RelativeLayout>

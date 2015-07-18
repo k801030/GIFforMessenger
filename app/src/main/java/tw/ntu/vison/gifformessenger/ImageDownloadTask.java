@@ -26,7 +26,7 @@ public class ImageDownloadTask extends AsyncTask<String, Integer, Movie> {
     @Override
     protected Movie doInBackground(String... strings) {
         URL url;
-        InputStream is = null;
+        InputStream is;
         Movie movie = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
@@ -38,6 +38,7 @@ public class ImageDownloadTask extends AsyncTask<String, Integer, Movie> {
         catch (IOException e) {
             System.err.printf ("Failed while reading bytes from url: %s", e.getMessage());
             e.printStackTrace ();
+            return null;
         }
         return movie;
     }

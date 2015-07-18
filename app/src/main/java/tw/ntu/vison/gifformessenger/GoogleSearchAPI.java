@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 public class GoogleSearchAPI {
     private final String API_URL = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0";
     private final int PAGE_SIZE = 8;
-    private int startItem = 0;
+    private int CURRENT_PAGE = 0;
     private String mUrl;
     private String mQuery;
     private String mFileType;
@@ -57,7 +57,7 @@ public class GoogleSearchAPI {
 
         // make url and encode query
         mUrl = API_URL;
-        mUrl += "&start="+ startItem + "&rsz=" + PAGE_SIZE ;
+        mUrl += "&start="+ CURRENT_PAGE*PAGE_SIZE + "&rsz=" + PAGE_SIZE ;
         mUrl += "&q=" + encode(mQuery) + "&as_filetype=" + mFileType + "&imgsz=" + mImageSize;;
         // sample result string will be
         // http://ajax.googleapis.com/ajax/services/search/images?v=1.0&start=0&rsz=8
@@ -67,11 +67,14 @@ public class GoogleSearchAPI {
     }
 
     public String getNextPageUrl() {
-        startItem += PAGE_SIZE;
+        CURRENT_PAGE ++;
+        if (CURRENT_PAGE >= 8) { // Google API has 8 pages response limit
+            return null;
+        }
         return getUrl();
     }
 
     public void resetPage() {
-        startItem = 0;
+        CURRENT_PAGE = 0;
     }
 }

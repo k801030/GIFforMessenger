@@ -37,8 +37,6 @@ public class MainActivityFragment extends Fragment {
         // do something with view
         Button buttonSearch = (Button) view.findViewById(R.id.button_search);
         buttonSearch.setOnClickListener(new OnSearchListener());
-        Button buttonLoadMore = (Button) view.findViewById(R.id.button_load_more);
-        buttonLoadMore.setOnClickListener(new OnLoadMoreListener());
         mSearchText = (EditText) view.findViewById(R.id.search_text);
 
         // set adapter to gridView
@@ -84,20 +82,6 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    private class OnLoadMoreListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            if (googleSearchAPI != null) {
-                String url = googleSearchAPI.getNextPageUrl();
-                if (url == null) {
-                    return;
-                }
-                ImageSearchTask task = new ImageSearchTask(new CustomTaskCallback());
-                task.execute(url);
-            }
-        }
-    }
-
     private class CustomTaskCallback implements ImageSearchTask.TaskCallback {
         @Override
         public void onTaskComplete(ArrayList<String> results) {
@@ -110,9 +94,11 @@ public class MainActivityFragment extends Fragment {
                     public void onTaskComplete(Movie movie) {
 
                         // notify dataset changed or re-assign adapter here
+                        if (movie == null) { // can't get data
+                            return;
+                        }
                         mAdapter.appendImageData(movie);
 
-                        Log.i("DownloadTask Complete", "");
                     }
                 }).execute(imageUrl);
 
